@@ -10,7 +10,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # pylint: disable=c0111,c0103,c0301
-from charmhelpers.core import hookenv
 from charms.reactive import RelationBase
 from charms.reactive import hook
 from charms.reactive import scopes
@@ -32,7 +31,6 @@ class ElasticSearchProvides(RelationBase):
         conv = self.conversation()
         conv.remove_state('{relation_name}.connected')
         conv.set_state('{relation_name}.broken')
-
 
     def configure(self, port, cluster_name):
         conv = self.conversation()

@@ -87,5 +87,5 @@ received all the information from the provider to make the connection.
 
 ## Maintainers
 
- - Matt Bruzek &lt;matthew.bruzek@canonical.com&gt;
- - Charles Butler &lt;charles.butler@canonical.com&gt;
+ - Matt Bruzek &lt;bruzek@ubuntu.com&gt;
+ - Charles Butler &lt;Chuck@dasroot.net&gt;

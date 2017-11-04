@@ -16,13 +16,13 @@ from charms.reactive import hook
 from charms.reactive import scopes
 
 
-class ElasticSearchClient(RelationBase):
-    # Existing elasticsearch client interface listed here:
-    # https://api.jujucharms.com/charmstore/v5/trusty/elasticsearch-13/archive/playbook.yaml
+class CassandraClient(RelationBase):
+    # Existing cassandra client interface listed here:
+    # ????
     scope = scopes.UNIT
     auto_accessors = ['host', 'port']
 
-    @hook('{requires:elasticsearch}-relation-{joined,changed}')
+    @hook('{requires:cassandra}-relation-{joined,changed}')
     def changed(self):
         self.set_state('{relation_name}.connected')
         conv = self.conversation()
@@ -30,7 +30,7 @@ class ElasticSearchClient(RelationBase):
         if conv.get_remote('port'):
             conv.set_state('{relation_name}.available')
 
-    @hook('{requires:elasticsearch}-relation-{departed,broken}')
+    @hook('{requires:cassandra}-relation-{departed,broken}')
     def departed(self):
         conv = self.conversation()
         conv.remove_state('{relation_name}.connected')
@@ -38,11 +38,11 @@ class ElasticSearchClient(RelationBase):
         conv.set_state('{relation_name}.broken')
 
     def list_unit_data(self):
-        ''' Iterate through all ElasticSearch conversations and return the data
+        ''' Iterate through all Cassandra conversations and return the data
         for each cached conversation. This allows us to build a cluster string
         directly from the relation data. eg:
 
-        for unit in elasticsearch.list_data():
+        for unit in cassandra.list_data():
             print(unit['cluster_name'])
         '''
         for conv in self.conversations():

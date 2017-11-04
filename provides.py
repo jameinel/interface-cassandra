@@ -15,18 +15,18 @@ from charms.reactive import hook
 from charms.reactive import scopes
 
 
-class ElasticSearchProvides(RelationBase):
+class CassandraProvides(RelationBase):
     # Every unit connecting will get the same information
     scope = scopes.GLOBAL
 
     # Use some template magic to declare our relation(s)
 
-    @hook('{provides:elasticsearch}-relation-{joined,changed}')
+    @hook('{provides:cassandra}-relation-{joined,changed}')
     def joined(self):
         conv = self.conversation()
         conv.set_state('{relation_name}.connected')
 
-    @hook('{provides:elasticsearch}-relation-{departed,broken}')
+    @hook('{provides:cassandra}-relation-{departed,broken}')
     def departed(self):
         conv = self.conversation()
         conv.remove_state('{relation_name}.connected')

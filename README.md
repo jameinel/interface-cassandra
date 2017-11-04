@@ -1,56 +1,56 @@
-# Elasticsearch Interface
+# Cassandra Interface
 
  This is a Juju charm interface layer. This interface is used for
- connecting to an Elasticsearch unit.
+ connecting to an Cassandra unit.
 
 ### Examples
 
 #### Requires
 
-If your charm needs to connect to ElasticSearch:
+If your charm needs to connect to Cassandra:
 
   `metadata.yaml`
 
 ```yaml
 requires:
-  elasticsearch:
-    interface: elasticsearch
+  cassandra:
+    interface: cassandra
 ```
 
   `layer.yaml`
 
 ```yaml
-includes: ['interface:elasticsearch']
+includes: ['interface:cassandra']
 ```  
 
   `reactive/code.py`
 
 ```python
-@when('elasticsearch.available')
-def connect_to_elasticsearch(elasticsearch):
-    print(elasticsearch.host())
-    print(elasticsearch.port())
-    print(elasticsearch.cluster_name())
+@when('cassandra.available')
+def connect_to_cassandra(cassandra):
+    print(cassandra.host())
+    print(cassandra.port())
+    print(cassandra.cluster_name())
 
 ```
 
 
 #### Provides
 
-If your charm needs to provide Elasticsearch connection details:
+If your charm needs to provide Cassandra connection details:
 
   `metadata.yaml`
 
 ```yaml
 provides:
-  elasticsearch:
-    interface: elasticsearch
+  cassandra:
+    interface: cassandra
 ```
 
   `layer.yaml`
 
 ```yaml
-includes: ['interface:elasticsearch']
+includes: ['interface:cassandra']
 ```
 
   `reactive/code.py`
@@ -69,23 +69,22 @@ def connect_to_client(client):
 ### States
 
 **{relation_name}.connected** - Denotes that the client has connected to the
-Elasticsearch node(s), but has not yet received the data to configure the
+Cassandra node(s), but has not yet received the data to configure the
 connection.
 
 **{relation_name}.available** - Denotes that the client has connected and
 received all the information from the provider to make the connection.
 
 **{relation_name}.departed** - Denotes that the unit has departed from the
- Elasticsearch relationship, and should be removed from any configuration
- files, etc.
+Cassandra relationship, and should be removed from any configuration
+files, etc.
 
 ### Data
 
 - **host** - The units private address
 - **port** - TCP Port to use
-- **cluster_name** - The Elasticsearch clusters' name
+- **cluster_name** - The Cassandra clusters' name
 
 ## Maintainers
 
- - Matt Bruzek &lt;bruzek@ubuntu.com&gt;
- - Charles Butler &lt;Chuck@dasroot.net&gt;
+ - John Arbash Meinel &lt;john@arbash-meinel.com&gt;

@@ -19,15 +19,18 @@ from charms.reactive import scopes
 class CassandraClient(RelationBase):
     # Existing cassandra client interface listed here:
     # ????
-    scope = scopes.UNIT
-    auto_accessors = ['host', 'port']
+    scope = scopes.SERVICE
+    auto_accessors = ['username', 'password', 'host', 'native_transport_port',
+            'rpc_port', 'cluster_name', 'datacenter', 'rack']
+
 
     @hook('{requires:cassandra}-relation-{joined,changed}')
     def changed(self):
         self.set_state('{relation_name}.connected')
         conv = self.conversation()
-        # assume we have all the data if we have the port
-        if conv.get_remote('port'):
+        # The basic data we know that we will need
+        if (conv.get_remote('rpc_port') and conv.get_remote('username') and
+            conv.get_remote('password')):
             conv.set_state('{relation_name}.available')
 
     @hook('{requires:cassandra}-relation-{departed,broken}')
@@ -42,10 +45,8 @@ class CassandraClient(RelationBase):
         for each cached conversation. This allows us to build a cluster string
         directly from the relation data. eg:
 
-        for unit in cassandra.list_data():
+        for unit in cassandra.list_unit_data():
             print(unit['cluster_name'])
         '''
         for conv in self.conversations():
-            yield {'cluster_name': conv.get_remote('cluster_name'),
-                   'host': conv.get_remote('private-address'),
-                   'port': conv.get_remote('port')}
+            yield dict((key, conv.get_remote(key)) for key in self.auto_accessors)
